@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+
+  python-service:
+    build: ./python-service
+    ports:
+      - "8000:8000"
+
+  dotnet-service:
+    build: ./dotnet-service
+    ports:
+      - "5000:8080"
+    depends_on:
+      - python-service

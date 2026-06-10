@@ -1,0 +1,46 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main
+
+pull_request:
+    branches:
+      - main
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Build .NET
+      run: |
+        cd dotnet-service
+        dotnet restore
+        dotnet build
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.11
+
+    - name: Install Python Dependencies
+      run: |
+        cd python-service
+        pip install -r requirements.txt
+
+    - name: Run Python Tests
+      run: |
+        cd python-service
+        pytest
